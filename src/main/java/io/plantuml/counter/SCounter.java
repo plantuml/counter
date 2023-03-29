@@ -26,7 +26,7 @@ public class SCounter {
         }
     }
 
-    public long getNb() {
+    public long getTotal() {
         lock.lock();
         try {
             return nb;

@@ -9,20 +9,22 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class CounterApplication extends SpringBootServletInitializer  {
+public class CounterApplication extends SpringBootServletInitializer {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CounterApplication.class, args);
-	}
+    public static final SCounter count = new SCounter();
 
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(CounterApplication.class);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CounterApplication.class, args);
+    }
 
-	@Bean
-	public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> webServerFactoryCustomizer() {
-		return factory -> factory.setContextPath("/counter");
-	}
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(CounterApplication.class);
+    }
+
+    @Bean
+    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> webServerFactoryCustomizer() {
+        return factory -> factory.setContextPath("/counter");
+    }
 
 }

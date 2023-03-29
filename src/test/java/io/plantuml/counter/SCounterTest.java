@@ -8,9 +8,9 @@ public class SCounterTest {
     @Test
     public void basic() {
         final SCounter counter = new SCounter();
-        Assertions.assertEquals(0, counter.getNb());
+        Assertions.assertEquals(0, counter.getTotal());
         counter.increment(1000L);
-        Assertions.assertEquals(1, counter.getNb());
+        Assertions.assertEquals(1, counter.getTotal());
 
         // The rate is really slow
         Assertions.assertEquals(7, counter.getRate(2000));

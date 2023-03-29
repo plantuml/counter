@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class BadgeTotalController {
 
     @GetMapping(value = "/v2-total", produces = "application/json")
-    public String ping() {
-        final int nb = 0;
+    public String total() {
+        final long nb = CounterApplication.count.getTotal();
         final String label = "online diagrams";
         final String message = "" + nb;
         final String color = Badge.COLOR_INFORMAL;

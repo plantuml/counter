@@ -1,7 +1,6 @@
 package io.plantuml.counter;
 
 import org.hamcrest.MatcherAssert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -12,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 @SpringBootTest(classes = CounterApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class IncrementControllerTests {
@@ -29,8 +29,11 @@ class IncrementControllerTests {
         final HttpHeaders headers = new HttpHeaders();
         final HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
+        MatcherAssert.assertThat(CounterApplication.count.getTotal(), equalTo(0L));
         final ResponseEntity<String> result = restTemplate.postForEntity(createURLWithPort("/v2-increment"), "foo45", String.class);
-        Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
+        MatcherAssert.assertThat(result.getStatusCode(), equalTo(HttpStatus.OK));
+
+        MatcherAssert.assertThat(CounterApplication.count.getTotal(), equalTo(1L));
         MatcherAssert.assertThat(result.getBody(), containsString("ok"));
     }
 
