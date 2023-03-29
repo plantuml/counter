@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BadgeRateController {
 
-    @GetMapping(value = "/v2-rate", produces = "application/json")
+    @GetMapping(value = "/v2-rate-minute", produces = "application/json")
     public String rate() {
-        final long nb = CounterApplication.count.getRate(System.currentTimeMillis());
+        final long nb = CounterApplication.count.diagramsPerMinute(System.currentTimeMillis());
         final String label = "current rate";
         final String message = "" + nb + " diag. per minute";
         final String color = Badge.COLOR_INFORMAL;

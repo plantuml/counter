@@ -4,7 +4,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class SCounter {
-    private final static int n = 128;
+    private final static int SIZE = 128;
+    public static final int MINIMUM_FOR_ACCURATE_VALUES = 1800;
 
     private final Lock lock = new ReentrantLock();
 
@@ -17,9 +18,9 @@ public class SCounter {
         lock.lock();
         try {
             if (nb == 0)
-                sumWhen = now * (n - 1);
+                sumWhen = now * (SIZE - 1);
             else
-                sumWhen = sumWhen - (sumWhen + n - 1) / n + now;
+                sumWhen = sumWhen - (sumWhen + SIZE - 1) / SIZE + now;
             nb++;
         } finally {
             lock.unlock();
@@ -35,15 +36,24 @@ public class SCounter {
         }
     }
 
-    public long getRate(long now) {
+    public long averageMillisecondsBetweenTwoTicks(long now) {
         lock.lock();
         try {
-            final long mean = sumWhen / n;
+            if (nb < MINIMUM_FOR_ACCURATE_VALUES)
+                return 0;
+            final long mean = sumWhen / SIZE;
             final long diff = (now - mean);
-            return diff / n;
+            return diff / SIZE;
         } finally {
             lock.unlock();
         }
+    }
+
+    public int diagramsPerMinute(long now) {
+        final long averageMillisecondsBetweenTwoTicks = averageMillisecondsBetweenTwoTicks(now);
+        if (averageMillisecondsBetweenTwoTicks == 0)
+            return 0;
+        return (int) (60_000L / averageMillisecondsBetweenTwoTicks);
     }
 
 
