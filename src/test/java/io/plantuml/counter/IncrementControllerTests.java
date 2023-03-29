@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import static org.hamcrest.CoreMatchers.containsString;
 
 @SpringBootTest(classes = CounterApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class BadgeControllerTests {
+class IncrementControllerTests {
 
     @LocalServerPort
     private int port;
@@ -24,14 +24,14 @@ class BadgeControllerTests {
     }
 
     @Test
-    void total() {
+    void increment() {
         final TestRestTemplate restTemplate = new TestRestTemplate();
         final HttpHeaders headers = new HttpHeaders();
         final HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
-        final ResponseEntity<String> result = restTemplate.getForEntity(createURLWithPort("/v2-total"), String.class);
+        final ResponseEntity<String> result = restTemplate.postForEntity(createURLWithPort("/v2-increment"), "foo", String.class);
         Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
-        MatcherAssert.assertThat(result.getBody(), containsString("\"0\""));
+        MatcherAssert.assertThat(result.getBody(), containsString("ok"));
     }
 
 }
