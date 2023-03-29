@@ -20,7 +20,7 @@ class BadgeControllerTests {
     private int port;
 
     private String createURLWithPort(String uri) {
-        return "http://localhost:" + port + uri;
+        return "http://localhost:" + port + "/counter" + uri;
     }
 
     @Test

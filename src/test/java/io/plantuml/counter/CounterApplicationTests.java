@@ -19,7 +19,10 @@ class CounterApplicationTests {
     @LocalServerPort
     private int port;
 
-
+    private String createURLWithPort(String uri) {
+        return "http://localhost:" + port + "/counter" + uri;
+    }
+    
     @Test
     void ping() {
         final TestRestTemplate restTemplate = new TestRestTemplate();
@@ -29,10 +32,6 @@ class CounterApplicationTests {
         final ResponseEntity<String> result = restTemplate.getForEntity(createURLWithPort("/ping"), String.class);
         Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
         MatcherAssert.assertThat(result.getBody(), containsString("v4"));
-    }
-
-    private String createURLWithPort(String uri) {
-        return "http://localhost:" + port + uri;
     }
 
 }
