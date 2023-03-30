@@ -15,6 +15,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.json:json:20230227")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
