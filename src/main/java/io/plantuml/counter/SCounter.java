@@ -1,5 +1,11 @@
 package io.plantuml.counter;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -9,8 +15,33 @@ public class SCounter {
 
     private final Lock lock = new ReentrantLock();
 
+    private final Path dataFile = Paths.get("/tmp/counter/counter.txt");
     private long sumWhen;
     private long nb;
+
+    public SCounter() {
+        if (Files.isReadable(dataFile))
+            try {
+                final List<String> saved = Files.readAllLines(dataFile);
+                this.nb = Long.parseLong(saved.get(0));
+                this.sumWhen = Long.parseLong(saved.get(1));
+            } catch (IOException e) {
+                System.err.println("cannot read from " + dataFile);
+            }
+    }
+
+    public void saveMeNow() {
+        final List<String> data = new ArrayList<>();
+        data.add("" + nb);
+        data.add("" + sumWhen);
+        try {
+            System.err.println("saving " + data + " to " + dataFile.toFile().getAbsolutePath());
+            Files.write(dataFile, data);
+            System.err.println("saving ok");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void increment(long now) {
         // See https://fossies.org/linux/haproxy/include/proto/freq_ctr.h for the theory
