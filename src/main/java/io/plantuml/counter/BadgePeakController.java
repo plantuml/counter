@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BadgePeakController {
 
-    @GetMapping(value = "/v2-peak", produces = "application/json")
+    @GetMapping(value = "/v2-peak-minute", produces = "application/json")
     public String peak() {
         final int nb = 42;
         final String label = "peak rate";
