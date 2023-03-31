@@ -18,6 +18,7 @@ public class SCounter {
     private final Path dataFile = Paths.get("/tmp/counter/counter.txt");
     private long sumWhen;
     private long nb;
+    private int peakPerMinute;
 
     public SCounter() {
         if (Files.isReadable(dataFile))
@@ -25,6 +26,8 @@ public class SCounter {
                 final List<String> saved = Files.readAllLines(dataFile);
                 this.nb = Long.parseLong(saved.get(0));
                 this.sumWhen = Long.parseLong(saved.get(1));
+                if (saved.size() > 2)
+                    this.peakPerMinute = Integer.parseInt(saved.get(2));
             } catch (IOException e) {
                 System.err.println("cannot read from " + dataFile);
             }
@@ -34,6 +37,7 @@ public class SCounter {
         final List<String> data = new ArrayList<>();
         data.add("" + nb);
         data.add("" + sumWhen);
+        data.add("" + peakPerMinute);
         try {
             System.err.println("saving " + data + " to " + dataFile.toFile().getAbsolutePath());
             Files.write(dataFile, data);
@@ -87,5 +91,19 @@ public class SCounter {
         return (int) (60_000L / averageMillisecondsBetweenTwoTicks);
     }
 
+    public int peakPerMinute() {
+        return peakPerMinute;
+    }
 
+
+    public void computePeaks(long now) {
+        final int current = diagramsPerMinute(now);
+        lock.lock();
+        try {
+            if (current > peakPerMinute)
+                peakPerMinute = current;
+        } finally {
+            lock.unlock();
+        }
+    }
 }

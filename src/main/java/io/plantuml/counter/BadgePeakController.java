@@ -8,7 +8,7 @@ public class BadgePeakController {
 
     @GetMapping(value = "/v2-peak-minute", produces = "application/json")
     public String peak() {
-        final int nb = 42;
+        final long nb = CounterApplication.count.peakPerMinute();
         final String label = "peak rate";
         final String message = "" + nb + " diag. per minute";
         final String color = Badge.COLOR_IMPORTANT;

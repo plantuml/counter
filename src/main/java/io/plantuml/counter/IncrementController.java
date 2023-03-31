@@ -17,6 +17,7 @@ public class IncrementController {
                 CounterApplication.count.increment(System.currentTimeMillis());
 
             CounterApplication.count.saveMeNow();
+            CounterApplication.count.computePeaks(System.currentTimeMillis());
 
             return "{\"status\":\"ok\"}";
         }
