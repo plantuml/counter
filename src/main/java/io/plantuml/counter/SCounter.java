@@ -39,9 +39,9 @@ public class SCounter {
         data.add("" + sumWhen);
         data.add("" + peakPerMinute);
         try {
-            System.err.println("saving " + data + " to " + dataFile.toFile().getAbsolutePath());
+            // System.err.println("saving " + data + " to " + dataFile.toFile().getAbsolutePath());
             Files.write(dataFile, data);
-            System.err.println("saving ok");
+            // System.err.println("saving ok");
         } catch (IOException e) {
             e.printStackTrace();
         }
