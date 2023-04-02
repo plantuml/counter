@@ -43,7 +43,7 @@ public class SCounter {
             Files.write(dataFile, data);
             // System.err.println("saving ok");
         } catch (IOException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
