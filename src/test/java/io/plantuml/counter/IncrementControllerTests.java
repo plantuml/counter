@@ -30,7 +30,8 @@ class IncrementControllerTests {
         final HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
         MatcherAssert.assertThat(CounterApplication.count.getTotal(), equalTo(0L));
-        final ResponseEntity<String> result = restTemplate.postForEntity(createURLWithPort("/v2-increment"), "foo45", String.class);
+        final ResponseEntity<String> result = restTemplate.postForEntity(createURLWithPort("/v2-increment"),
+                "{\"nb\":1, \"who\":\"test\"}", String.class);
         MatcherAssert.assertThat(result.getStatusCode(), equalTo(HttpStatus.OK));
 
         MatcherAssert.assertThat(CounterApplication.count.getTotal(), equalTo(1L));
