@@ -28,6 +28,8 @@ public class SCounter {
                 this.sumWhen = Long.parseLong(saved.get(1));
                 if (saved.size() > 2)
                     this.peakPerMinute = Integer.parseInt(saved.get(2));
+                if (this.peakPerMinute > 10_000)
+                    this.peakPerMinute = 0;
             } catch (IOException e) {
                 System.err.println("cannot read from " + dataFile);
             }

@@ -19,12 +19,21 @@ public class IncrementController {
         JSONObject obj = new JSONObject(data);
         if (obj.has("nb") && obj.has("who")) {
             final int nb = obj.getInt("nb");
-            for (int i = 0; i < nb; i++)
-                CounterApplication.count.increment(System.currentTimeMillis());
+            if (obj.has("min") && obj.has("max")) {
+                final long min = obj.getLong("min");
+                final long max = obj.getLong("max");
+                for (int i = 0; i < nb; i++) {
+                    final long when = min + (max - min) * i / nb;
+                    CounterApplication.count.increment(when);
+                }
 
+            } else {
+                for (int i = 0; i < nb; i++)
+                    CounterApplication.count.increment(System.currentTimeMillis());
+
+            }
             CounterApplication.count.saveMeNow();
             CounterApplication.count.computePeaks(System.currentTimeMillis());
-
             return "{\"status\":\"ok\"}";
         }
         return "{\"status\":\"error\"}";
