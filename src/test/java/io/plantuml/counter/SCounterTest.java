@@ -11,18 +11,18 @@ public class SCounterTest {
     public void basic() {
         final SCounter counter = new SCounter();
         MatcherAssert.assertThat(counter.getTotal(), equalTo(0L));
-        MatcherAssert.assertThat(counter.averageMillisecondsBetweenTwoTicks(2000), equalTo(0L)); // No rate Yet
-        MatcherAssert.assertThat(counter.diagramsPerMinute(2000), equalTo(0));
+        MatcherAssert.assertThat(counter.averageMillisecondsBetweenTwoTicks(), equalTo(0L)); // No rate Yet
+        MatcherAssert.assertThat(counter.diagramsPerMinute(), equalTo(0));
 
         counter.increment(1000L);
         MatcherAssert.assertThat(counter.getTotal(), equalTo(1L));
-        MatcherAssert.assertThat(counter.averageMillisecondsBetweenTwoTicks(2000), equalTo(0L)); // No rate Yet
-        MatcherAssert.assertThat(counter.diagramsPerMinute(2000), equalTo(0));
+        MatcherAssert.assertThat(counter.averageMillisecondsBetweenTwoTicks(), equalTo(0L)); // No rate Yet
+        MatcherAssert.assertThat(counter.diagramsPerMinute(), equalTo(0));
 
         counter.increment(1000L);
         MatcherAssert.assertThat(counter.getTotal(), equalTo(2L));
-        MatcherAssert.assertThat(counter.averageMillisecondsBetweenTwoTicks(2000), equalTo(0L)); // No rate Yet
-        MatcherAssert.assertThat(counter.diagramsPerMinute(2000), equalTo(0));
+        MatcherAssert.assertThat(counter.averageMillisecondsBetweenTwoTicks(), equalTo(0L)); // No rate Yet
+        MatcherAssert.assertThat(counter.diagramsPerMinute(), equalTo(0));
 
     }
 
@@ -35,8 +35,8 @@ public class SCounterTest {
             counter.increment(time.now());
             time.moveForwardInFuture(1000L * 60);
         }
-        MatcherAssert.assertThat(counter.averageMillisecondsBetweenTwoTicks(time.now()), equalTo(60_000L));
-        MatcherAssert.assertThat(counter.diagramsPerMinute(time.now()), equalTo(1));
+        MatcherAssert.assertThat(counter.averageMillisecondsBetweenTwoTicks(), equalTo(59_531L));
+        MatcherAssert.assertThat(counter.diagramsPerMinute(), equalTo(1));
 
     }
 
@@ -49,8 +49,8 @@ public class SCounterTest {
             counter.increment(time.now());
             time.moveForwardInFuture(1000L);
         }
-        MatcherAssert.assertThat(counter.averageMillisecondsBetweenTwoTicks(time.now()), equalTo(1000L));
-        MatcherAssert.assertThat(counter.diagramsPerMinute(time.now()), equalTo(60));
+        MatcherAssert.assertThat(counter.averageMillisecondsBetweenTwoTicks(), equalTo(992L));
+        MatcherAssert.assertThat(counter.diagramsPerMinute(), equalTo(60));
     }
 
     @Test
@@ -65,8 +65,8 @@ public class SCounterTest {
             time.moveForwardInFuture(2000L);
         }
 
-        MatcherAssert.assertThat(counter.averageMillisecondsBetweenTwoTicks(time.now()), equalTo(1501L));
-        MatcherAssert.assertThat(counter.diagramsPerMinute(time.now()), equalTo(39));
+        MatcherAssert.assertThat(counter.averageMillisecondsBetweenTwoTicks(), equalTo(1486L));
+        MatcherAssert.assertThat(counter.diagramsPerMinute(), equalTo(40));
     }
 
     @Test
@@ -80,24 +80,24 @@ public class SCounterTest {
             counter.increment(time.now());
             time.moveForwardInFuture(2000L);
         }
-        MatcherAssert.assertThat(counter.averageMillisecondsBetweenTwoTicks(time.now()), equalTo(1501L));
-        MatcherAssert.assertThat(counter.diagramsPerMinute(time.now()), equalTo(39));
+        MatcherAssert.assertThat(counter.averageMillisecondsBetweenTwoTicks(), equalTo(1486L));
+        MatcherAssert.assertThat(counter.diagramsPerMinute(), equalTo(40));
 
         // Now every second
         for (int i = 0; i < 2400; i++) {
             counter.increment(time.now());
             time.moveForwardInFuture(1000L);
         }
-        MatcherAssert.assertThat(counter.averageMillisecondsBetweenTwoTicks(time.now()), equalTo(1000L));
-        MatcherAssert.assertThat(counter.diagramsPerMinute(time.now()), equalTo(60));
+        MatcherAssert.assertThat(counter.averageMillisecondsBetweenTwoTicks(), equalTo(992L));
+        MatcherAssert.assertThat(counter.diagramsPerMinute(), equalTo(60));
 
         // Now every minute
         for (int i = 0; i < 2400; i++) {
             counter.increment(time.now());
             time.moveForwardInFuture(1000L * 60);
         }
-        MatcherAssert.assertThat(counter.averageMillisecondsBetweenTwoTicks(time.now()), equalTo(60_000L));
-        MatcherAssert.assertThat(counter.diagramsPerMinute(time.now()), equalTo(1));
+        MatcherAssert.assertThat(counter.averageMillisecondsBetweenTwoTicks(), equalTo(59_531L));
+        MatcherAssert.assertThat(counter.diagramsPerMinute(), equalTo(1));
 
 
     }
@@ -109,11 +109,11 @@ public class SCounterTest {
         for (int i = 0; i < 1799; i++) {
             counter.increment(time.now());
             time.moveForwardInFuture(1000L);
-            MatcherAssert.assertThat(counter.diagramsPerMinute(time.now()), equalTo(0));
+            MatcherAssert.assertThat(counter.diagramsPerMinute(), equalTo(0));
         }
         counter.increment(time.now());
         time.moveForwardInFuture(1000L);
-        MatcherAssert.assertThat(counter.diagramsPerMinute(time.now()), equalTo(55));
+        MatcherAssert.assertThat(counter.diagramsPerMinute(), equalTo(56));
 
     }
 

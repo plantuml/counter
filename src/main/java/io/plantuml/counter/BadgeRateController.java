@@ -10,7 +10,7 @@ public class BadgeRateController {
 
     @GetMapping(value = "/v2-rate-minute", produces = "application/json")
     public String rate() {
-        final long nb = CounterApplication.count.diagramsPerMinute(System.currentTimeMillis());
+        final long nb = CounterApplication.count.diagramsPerMinute();
         final String label = "current rate";
         final String message = "" + String.format(Locale.US, "%,d", nb) + " diag. per minute";
         final String color = Badge.COLOR_INFORMAL;

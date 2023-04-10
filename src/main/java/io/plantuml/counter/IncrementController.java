@@ -33,7 +33,7 @@ public class IncrementController {
 
             }
             CounterApplication.count.saveMeNow();
-            CounterApplication.count.computePeaks(System.currentTimeMillis());
+            CounterApplication.count.computePeaks();
             return "{\"status\":\"ok\"}";
         }
         return "{\"status\":\"error\"}";

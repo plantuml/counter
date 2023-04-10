@@ -18,6 +18,7 @@ public class SCounter {
     private final Path dataFile = Paths.get("/tmp/counter/counter.txt");
     private long sumWhen;
     private long nb;
+    private long lastTime = System.currentTimeMillis();
     private int peakPerMinute;
 
     public SCounter() {
@@ -54,6 +55,7 @@ public class SCounter {
 
         lock.lock();
         try {
+            lastTime = Math.max(now, lastTime);
             if (nb == 0)
                 sumWhen = now * (SIZE - 1);
             else
@@ -73,21 +75,21 @@ public class SCounter {
         }
     }
 
-    public long averageMillisecondsBetweenTwoTicks(long now) {
+    public long averageMillisecondsBetweenTwoTicks() {
         lock.lock();
         try {
             if (nb < MINIMUM_FOR_ACCURATE_VALUES)
                 return 0;
             final long mean = sumWhen / SIZE;
-            final long diff = (now - mean);
+            final long diff = (lastTime - mean);
             return diff / SIZE;
         } finally {
             lock.unlock();
         }
     }
 
-    public int diagramsPerMinute(long now) {
-        final long averageMillisecondsBetweenTwoTicks = averageMillisecondsBetweenTwoTicks(now);
+    public int diagramsPerMinute() {
+        final long averageMillisecondsBetweenTwoTicks = averageMillisecondsBetweenTwoTicks();
         if (averageMillisecondsBetweenTwoTicks == 0)
             return 0;
         return (int) (60_000L / averageMillisecondsBetweenTwoTicks);
@@ -98,8 +100,8 @@ public class SCounter {
     }
 
 
-    public void computePeaks(long now) {
-        final int current = diagramsPerMinute(now);
+    public void computePeaks() {
+        final int current = diagramsPerMinute();
         lock.lock();
         try {
             if (current > peakPerMinute)
